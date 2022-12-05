@@ -21,7 +21,7 @@ public class OAuthConfig extends AuthorizationServerConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final UserDetailsLoader userDetailsLoader;
+    private final UserDetailsLoader userService;
 
     @Value("${jwt.clientId:rest-blog-client}")
     private String clientId;
@@ -41,10 +41,10 @@ public class OAuthConfig extends AuthorizationServerConfigurerAdapter {
     @Value("${jwt.refreshTokenValiditySeconds:2592000}") // 30 days
     private int refreshTokenValiditySeconds;
 
-    public OAuthConfig(AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, UserDetailsLoader userDetailsLoader) {
+    public OAuthConfig(AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, UserDetailsLoader userService) {
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
-        this.userDetailsLoader = userDetailsLoader;
+        this.userService = userService;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class OAuthConfig extends AuthorizationServerConfigurerAdapter {
     public void configure(final AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints
                 .accessTokenConverter(accessTokenConverter())
-                .userDetailsService(userDetailsLoader)
+                .userDetailsService(userService)
                 .authenticationManager(authenticationManager);
     }
 
