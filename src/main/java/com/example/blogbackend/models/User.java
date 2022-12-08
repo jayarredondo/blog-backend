@@ -21,7 +21,7 @@ public class User {
 
     @Column(nullable = false)
     private String password;
-
+    // This property defines the role of the user
     @Enumerated(EnumType.STRING)
     @Column
     private UserRole role;

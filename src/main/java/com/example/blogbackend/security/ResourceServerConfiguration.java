@@ -33,6 +33,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/users")
+                // has authority will just be "USER"
                 .hasAnyAuthority("ADMIN", "USER")
 
                 .antMatchers("/api/posts")

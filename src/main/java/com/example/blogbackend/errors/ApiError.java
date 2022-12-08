@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
+// These two classes are needed for sending error responses in the API.
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.CUSTOM, property = "error", visible = true)
 @JsonTypeIdResolver(LowerCaseClassNameResolver.class)
 class ApiError {

@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+// This class is used to provide the details of our User in the DB to communicate with Security
 @Service("UserDetailsLoader")
 public class UserDetailsLoader implements UserDetailsService {
 

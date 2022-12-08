@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
-
+// Custom class to inform user via JSON response of their unauthorized status.
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
@@ -28,7 +28,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         this.messageConverter = new StringHttpMessageConverter();
         this.mapper = mapper;
     }
-
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException {
         ApiError apiError = new ApiError(UNAUTHORIZED);

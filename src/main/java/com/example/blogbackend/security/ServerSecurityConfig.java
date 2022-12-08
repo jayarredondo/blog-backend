@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
+// This class is used to check to see if the passwords match in the DB and what's coming in from the frontend.
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, proxyTargetClass = true)
@@ -22,7 +22,6 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                                 UserDetailsLoader userDetailsLoader) {
         this.userDetailsLoader = userDetailsLoader;
     }
-
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();

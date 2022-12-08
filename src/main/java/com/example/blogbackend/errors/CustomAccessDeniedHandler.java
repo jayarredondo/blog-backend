@@ -6,7 +6,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
+// Custom class to handle AccessDeniedException
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
