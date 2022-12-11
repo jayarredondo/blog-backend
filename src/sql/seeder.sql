@@ -1,4 +1,4 @@
-USE vueblog_db;
+USE jay;
 
 # password: groovy
 INSERT INTO users (id, email, password, role, username)

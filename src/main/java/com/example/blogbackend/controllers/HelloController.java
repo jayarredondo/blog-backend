@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HelloController {
-    @GetMapping(value = "/", produces = "application/json")
+    @GetMapping(value = "/docs", produces = "application/json")
     public String test() {
         return "hello message!";
     }
