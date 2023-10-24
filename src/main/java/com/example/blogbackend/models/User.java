@@ -2,7 +2,7 @@ package com.example.blogbackend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import java.util.List;
 
@@ -44,6 +44,13 @@ public class User {
         this.email = email;
         this.password = password;
         this.post = post;
+    }
+
+    public User(long id, String username, String email, String password) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
 
     public long getId() {

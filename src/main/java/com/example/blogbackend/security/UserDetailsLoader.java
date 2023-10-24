@@ -1,6 +1,7 @@
 package com.example.blogbackend.security;
 
 import com.example.blogbackend.models.User;
+import com.example.blogbackend.models.UserRole;
 import com.example.blogbackend.repos.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,7 +10,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+
 // This class is used to provide the details of our User in the DB to communicate with Security
 @Service("UserDetailsLoader")
 public class UserDetailsLoader implements UserDetailsService {

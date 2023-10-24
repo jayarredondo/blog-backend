@@ -1,14 +1,21 @@
 package com.example.blogbackend.controllers;
 
+import com.example.blogbackend.dtos.AuthResponseDto;
+import com.example.blogbackend.dtos.LoginDto;
 import com.example.blogbackend.models.User;
 import com.example.blogbackend.repos.UserRepository;
 //import com.example.blogbackend.security.CustomAuthManager;
+import com.example.blogbackend.security.JWTGenerator;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
+//import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,12 +27,27 @@ import java.util.Optional;
 public class UserContoller {
 
     private final PasswordEncoder encoder;
-//    private CustomAuthManager authManager;
     private final UserRepository userDao;
+    private AuthenticationManager authenticationManager;
+    private JWTGenerator jwtGenerator;
 
-    public UserContoller(PasswordEncoder encoder, UserRepository userDao) {
+    public UserContoller(PasswordEncoder encoder, UserRepository userDao, AuthenticationManager authenticationManager, JWTGenerator jwtGenerator) {
         this.encoder = encoder;
         this.userDao = userDao;
+        this.authenticationManager = authenticationManager;
+        this.jwtGenerator = jwtGenerator;
+    }
+
+// Authentication
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponseDto> login(@RequestParam String username, @RequestParam String password) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        username,
+                        password));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtGenerator.generateToken(authentication);
+        return new ResponseEntity<>(new AuthResponseDto(token), HttpStatus.OK);
     }
 
     @GetMapping("/api/users")
@@ -46,14 +68,14 @@ public class UserContoller {
     }
 
     // This method is necessary for checking if the user is currently logged in.
-    @GetMapping("/api/users/me")
-    public Optional<User> getCurrentUser(OAuth2Authentication auth) {
-        if (auth == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Please log in.");
-        }
-        String username = auth.getName();
-        User currentUser = userDao.findByUsername(username);
-
-        return Optional.of(currentUser);
-    }
+//    @GetMapping("/api/users/me")
+//    public Optional<User> getCurrentUser(OAuth2Authentication auth) {
+//        if (auth == null) {
+//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Please log in.");
+//        }
+//        String username = auth.getName();
+//        User currentUser = userDao.findByUsername(username);
+//
+//        return Optional.of(currentUser);
+//    }
 }
