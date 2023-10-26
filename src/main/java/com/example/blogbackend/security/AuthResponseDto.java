@@ -1,4 +1,4 @@
-package com.example.blogbackend.dtos;
+package com.example.blogbackend.security;
 
 public class AuthResponseDto {
     private String accessToken;

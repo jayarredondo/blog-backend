@@ -1,6 +1,6 @@
 package com.example.blogbackend.controllers;
 
-import com.example.blogbackend.dtos.AuthResponseDto;
+import com.example.blogbackend.security.AuthResponseDto;
 import com.example.blogbackend.models.User;
 import com.example.blogbackend.repos.UserRepository;
 //import com.example.blogbackend.security.CustomAuthManager;
