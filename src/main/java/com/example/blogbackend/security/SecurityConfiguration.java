@@ -26,18 +26,23 @@ import java.util.Collections;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
-    @Autowired
     private JwtAuthEntryPoint authEntryPoint;
-    @Autowired
     private UserDetailsLoader userDetailsLoader;
 
+    public SecurityConfiguration(JwtAuthEntryPoint authEntryPoint, UserDetailsLoader userDetailsLoader) {
+        this.authEntryPoint = authEntryPoint;
+        this.userDetailsLoader = userDetailsLoader;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        // Creating an instance for CSRF token handler
         CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
         requestHandler.setCsrfRequestAttributeName("_csrf");
         http
+                // Prevents Spring from creating and storing authentication info in the HttpSession.
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // Configures CORS policy to allow requests from any (*) URI.
                 .cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
@@ -51,14 +56,23 @@ public class SecurityConfiguration {
                         return config;
                     }
                 }))
+                // Applies the requestHandler we created above to require
+                // CSRF tokens except for /sign-up and /login
                 .csrf(csrf -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/sign-up", "/login").csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+                // Applies out AuthEntryPoint class to send us an error message when
+                // receiving a 401 error.
+                .exceptionHandling(eH -> eH.authenticationEntryPoint(authEntryPoint))
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+                // Set auth permissions for HTTP request endpoints
                 .authorizeHttpRequests(requests -> {
+                    // Anyone can visit /sign-up, /login, and /docs
                     requests.requestMatchers("/sign-up", "/login", "/docs").permitAll();
-                    requests.requestMatchers("/api/users", "/posts").authenticated();
+                    // Only authenticated users can visit the following endpoints.
+                    requests.requestMatchers("/api/users/me", "/posts").authenticated();
                 });
         http.httpBasic(Customizer.withDefaults());
-
+        // Apply the JWTAuthenticationFilter to intercept each request to check
+        // for valid JWT tokens.
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

@@ -9,6 +9,12 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+/*
+    The purpose of this class is to allow for exception handling with
+    JWT Authentication. This will allow us to receive an error message
+    when we receive a 401 (Unauthorized) error.
+ */
+
 @Component
 public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
     @Override

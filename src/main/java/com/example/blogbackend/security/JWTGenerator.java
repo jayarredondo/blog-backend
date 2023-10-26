@@ -13,9 +13,13 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 
+/*
+    The purpose of this class is to customize and build a JWT token
+    based on User credentials.
+ */
+
 @Component
 public class JWTGenerator {
-    //private static final KeyPair keyPair = Keys.keyPairFor(SignatureAlgorithm.RS256);
     private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     private UserRepository userDao;
 
@@ -30,7 +34,9 @@ public class JWTGenerator {
         Date expireDate = new Date(currentDate.getTime() + SecurityConstants.JWT_EXPIRATION);
 
         String token = Jwts.builder()
-                .setSubject("Access Token")
+                .setSubject(authentication.getName())
+                // Can add multiple claims for different values that we want to set
+                // in the JWT token response
                 .claim("username", authentication.getName())
                 .claim("authorities", authUser.getRole())
                 .setIssuedAt( new Date())

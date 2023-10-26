@@ -14,7 +14,16 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/*
+    The purpose of this class is to intercept the HTTP Requests
+    to ensure that the JWT token is valid, or exists.
+ */
+
+
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
+
+    // The Autowired annotation allows Spring to create instances
+    // of these classes instead of using constructor injection.
     @Autowired
     private JWTGenerator tokenGenerator;
     @Autowired

@@ -9,6 +9,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/*
+    The purpose of this class is to ensure we are intercepting the CSRF token
+    for additional requests.
+ */
+
 public class CsrfCookieFilter extends OncePerRequestFilter {
 
     @Override

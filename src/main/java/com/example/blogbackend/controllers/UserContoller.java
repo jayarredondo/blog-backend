@@ -1,7 +1,6 @@
 package com.example.blogbackend.controllers;
 
 import com.example.blogbackend.dtos.AuthResponseDto;
-import com.example.blogbackend.dtos.LoginDto;
 import com.example.blogbackend.models.User;
 import com.example.blogbackend.repos.UserRepository;
 //import com.example.blogbackend.security.CustomAuthManager;
@@ -13,7 +12,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 //import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -68,14 +66,14 @@ public class UserContoller {
     }
 
     // This method is necessary for checking if the user is currently logged in.
-//    @GetMapping("/api/users/me")
-//    public Optional<User> getCurrentUser(OAuth2Authentication auth) {
-//        if (auth == null) {
-//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Please log in.");
-//        }
-//        String username = auth.getName();
-//        User currentUser = userDao.findByUsername(username);
-//
-//        return Optional.of(currentUser);
-//    }
+    @GetMapping("/api/users/me")
+    public Optional<User> getCurrentUser(Authentication auth) {
+        if (auth == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Please log in.");
+        }
+        String username = auth.getName();
+        User currentUser = userDao.findByUsername(username);
+
+        return Optional.of(currentUser);
+    }
 }
