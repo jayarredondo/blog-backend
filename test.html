@@ -7,25 +7,19 @@
 <body>
 <script>
     "use strict";
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
 
-    var raw = JSON.stringify({
-        "username": "jayman123",
-        "password": "groovy"
-    });
-
-    var requestOptions = {
+    let requestOptions = {
         method: 'POST',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow'
     };
 
-    fetch("http://localhost:8080/api/users/authenticate", requestOptions)
+    let username = 'testAccount'
+    let password = 'test'
+
+    fetch(`http://localhost:8080/login?username=${username}&password=${password}`, requestOptions)
         .then(response => response.json())
         .then(result => console.log(result))
         .catch(error => console.log('error', error));
+
 </script>
 </body>
 </html>
